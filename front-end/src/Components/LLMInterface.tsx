@@ -1,15 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 const LLNInterface = () => {
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
-  const [input, setInput] = useState('');
-  const [language, setLanguage] = useState('en');
+  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
+    [],
+  );
+  const [input, setInput] = useState("");
+  const [language, setLanguage] = useState("en");
 
   const fetchData = async (input: string, lang: string) => {
-    const response = await fetch('http://127.0.0.1:8000/query', {
-      method: 'POST',
+    const response = await fetch("http://127.0.0.1:8000/query", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         query: input,
@@ -23,13 +25,13 @@ const LLNInterface = () => {
 
   const handleSendMessage = () => {
     if (input.trim()) {
-      setMessages([...messages, { sender: 'User', text: input }]);
-      setInput('');
+      setMessages([...messages, { sender: "User", text: input }]);
+      setInput("");
       fetchData(input, language).then((responseData) => {
         setTimeout(() => {
           setMessages((prevMessages) => [
             ...prevMessages,
-            { sender: 'LLM', text: responseData.response },
+            { sender: "LLM", text: responseData.response },
           ]);
         }, 1000);
       });
@@ -46,7 +48,9 @@ const LLNInterface = () => {
           <div
             key={index}
             className={`my-2 p-2 rounded-md ${
-              msg.sender === 'User' ? 'bg-blue-200 self-end' : 'bg-gray-300 self-start'
+              msg.sender === "User"
+                ? "bg-violet-200 self-end"
+                : "bg-orange-200 self-start"
             }`}
           >
             <strong>{msg.sender}:</strong> {msg.text}
@@ -61,7 +65,7 @@ const LLNInterface = () => {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
+            if (e.key === "Enter") {
               handleSendMessage();
             }
           }}
